@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jersey="http://www.mulesoft.org/schema/mule/jersey" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:jpa="http://www.mulesoft.org/schema/mule/jpa" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/jpa http://www.mulesoft.org/schema/mule/jpa/current/mule-jpa.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/jersey/current/mule-jersey.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+<spring:beans>
+		<spring:import resource="classpath:applicationContext.xml"></spring:import>
+		
+		<!-- <spring:bean id="entityManager"
+			class="com.anirudh.entitymanager.EmployeeEntityManager"
+			destroy-method="close" /> -->
+ 
+	<!-- 	<spring:bean id="employeeDao" class="com.anirudh.dao.EmployeeDao">
+			<spring:property name="em" ref="entityManager" />
+		</spring:bean>
+	 -->
+ 
+</spring:beans>
+    <jpa:config name="Java_Persistence_API" entityManagerFactory-ref="entityManagerFactory" doc:name="Java Persistence API"/>
+    <data-mapper:config name="JSON_To_Pojo" transformationGraphPath="json_to_pojo.grf" doc:name="JSON_To_Pojo"/>
+    <data-mapper:config name="Pojo_To_Pojo" transformationGraphPath="pojo_to_pojo.grf" doc:name="Pojo_To_Pojo"/>
+    
+    <flow name="JPA_UPDATE" doc:name="JPA_UPDATE">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" doc:name="HTTP"/>
+        <data-mapper:transform config-ref="JSON_To_Pojo" doc:name="JSON To Pojo"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <logger message="#[payload.employee_id]" level="INFO" doc:name="Logger"/>
+        <transactional action="ALWAYS_BEGIN" doc:name="Transactional">
+            <jpa:upsert config-ref="Java_Persistence_API" entity-ref="#[payload]" id-ref="#[payload.employee_id]" fields="first_name" doc:name="Java Persistence API"/>
+        </transactional>
+      
+        <data-mapper:transform config-ref="Pojo_To_Pojo" doc:name="Pojo To Pojo"/>
+    </flow>
+    <flow name="GET_ALL_JPA" doc:name="GET_ALL_JPA">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" path="test" doc:name="HTTP"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <jpa:query config-ref="Java_Persistence_API" statement="SELECT em FROM Employee em" doc:name="Java Persistence API" />
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+    </flow>
+    <flow name="GetService" doc:name="GetService">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" path="getEmployee" doc:name="HTTP"/>
+        <jersey:resources doc:name="REST">
+            <component class="com.anirudh.service.EmployeeService"/>
+        </jersey:resources>
+    </flow>
+
+
+
+
+</mule>

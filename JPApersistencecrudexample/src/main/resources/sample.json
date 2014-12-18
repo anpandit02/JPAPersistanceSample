@@ -1,0 +1,18 @@
+{
+  "Employees":
+  
+    { 
+      "employee_id":"900",
+      "first_name":"Anirudh",
+	    "last_name":"Pandit",
+	    "department":"Sales",
+	    "job_title":"Consultant",
+	    "employee_type":"",
+	    "start_date":"",
+	    "status":"Active",
+	    "email":"anirudh.pandit@mulesoft.com"
+      
+    }
+  
+  
+}

@@ -1,0 +1,22 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    version="1.0">
+    <persistence-unit name="employee_openJPA">
+      
+        <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+        <class>com.anirudh.entities.Employee</class>
+        <properties>
+            <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>
+            <property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost:3306/Demo"/>
+     		<property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+     		<property name="openjpa.ConnectionUserName" value="root"/>
+     		<property name="openjpa.ConnectionPassword" value=""/>
+     		<property name="openjpa.DynamicEnhancementAgent" value="true"/>
+  			<property name="openjpa.RuntimeUnenhancedClasses" value="supported"/>
+     		<property name="openjpa.Log" value="DefaultLevel=WARN, Tool=INFO, SQL=TRACE"/>
+      		<property name="openjpa.FlushBeforeQueries" value="true"/>
+     		<property name="openjpa.IgnoreChanges" value="true"/>  
+     		
+        </properties>
+    </persistence-unit>
+</persistence>

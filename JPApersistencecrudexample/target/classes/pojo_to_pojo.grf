@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="anirudhpandit" created="Fri Nov 21 09:44:25 PST 2014" description="Pojo To Pojo" guiVersion="3.4.4.P" id="1416598055321" licenseCode="Unlicensed" licenseType="Unknown" modified="Fri Nov 21 09:44:25 PST 2014" modifiedBy="anirudhpandit" name="Pojo_To_Pojo" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Input" id="d04cb1a0-1595-42da-adab-c196f996d686">
+<Record fieldDelimiter="," name="Employee" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/object/department" containerType="SINGLE" label="department" name="department" type="string"/>
+<Field __index="1" __sourcePath="{}/object/email" containerType="SINGLE" label="email" name="email" type="string"/>
+<Field __index="2" __sourcePath="{}/object/employee_id" containerType="SINGLE" label="employee_id" name="employee_id" type="integer"/>
+<Field __index="3" __sourcePath="{}/object/employee_type" containerType="SINGLE" label="employee_type" name="employee_type" type="string"/>
+<Field __index="4" __sourcePath="{}/object/first_name" containerType="SINGLE" label="first_name" name="first_name" type="string"/>
+<Field __index="5" __sourcePath="{}/object/job_title" containerType="SINGLE" label="job_title" name="job_title" type="string"/>
+<Field __index="6" __sourcePath="{}/object/last_name" containerType="SINGLE" label="last_name" name="last_name" type="string"/>
+<Field __index="7" __sourcePath="{}/object/start_date" containerType="SINGLE" label="start_date" name="start_date" type="date"/>
+<Field __index="8" __sourcePath="{}/object/status" containerType="SINGLE" label="status" name="status" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Output" id="ff25fa43-dc49-41c1-834d-552234fc7f18">
+<Record fieldDelimiter="," name="String" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/object/text()" containerType="SINGLE" label="text()" name="text" type="string"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" fileURL="dict:inputPayload" guiName="Pojo READER" guiX="20" guiY="20" id="BEAN_READER0" type="BEAN_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context outPort="0" sequenceField="__id" xpath=".">
+  <Mapping cloverField="department" trim="true" xpath="department"/>
+  <Mapping cloverField="email" trim="true" xpath="email"/>
+  <Mapping cloverField="employee_id" trim="true" xpath="employee_id"/>
+  <Mapping cloverField="employee_type" trim="true" xpath="employee_type"/>
+  <Mapping cloverField="first_name" trim="true" xpath="first_name"/>
+  <Mapping cloverField="job_title" trim="true" xpath="job_title"/>
+  <Mapping cloverField="last_name" trim="true" xpath="last_name"/>
+  <Mapping cloverField="start_date" trim="true" xpath="start_date"/>
+  <Mapping cloverField="status" trim="true" xpath="status"/>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[JAVA]]></attr>
+<attr name="schema"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><schema-object>
+  <typed-object-ref type-ref="com.anirudh.entities.Employee"/>
+  <typed-object type="int"/>
+  <typed-object type="java.sql.Timestamp"/>
+  <typed-object type="com.anirudh.entities.Employee">
+    <typed-object-ref name="department" type-ref="java.lang.String"/>
+    <typed-object-ref name="email" type-ref="java.lang.String"/>
+    <typed-object-ref name="employee_id" type-ref="int"/>
+    <typed-object-ref name="employee_type" type-ref="java.lang.String"/>
+    <typed-object-ref name="first_name" type-ref="java.lang.String"/>
+    <typed-object-ref name="job_title" type-ref="java.lang.String"/>
+    <typed-object-ref name="last_name" type-ref="java.lang.String"/>
+    <typed-object-ref name="start_date" type-ref="java.sql.Timestamp"/>
+    <typed-object-ref name="status" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="java.lang.String"/>
+</schema-object>
+]]></attr>
+</Node>
+<Node cacheInMemory="true" enabled="enabled" fileURL="dict:outputPayload" guiName="Pojo WRITER" guiX="900" guiY="20" id="BEAN_WRITER0" type="BEAN_WRITER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<object xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">$0.text</object>]]></attr>
+<attr name="_data_format"><![CDATA[JAVA]]></attr>
+<attr name="schema"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><schema-object>
+  <typed-object-ref type-ref="java.lang.String"/>
+  <typed-object type="java.lang.String"/>
+</schema-object>
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'object' -&gt; 'object'" guiX="460" guiY="20" id="FOREACH_OBJECT_OBJECT" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+output.text = "done";]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="d04cb1a0-1595-42da-adab-c196f996d686" outPort="Port 0 (out)" toNode="FOREACH_OBJECT_OBJECT:0"/>
+<Edge debugMode="true" fromNode="FOREACH_OBJECT_OBJECT:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="ff25fa43-dc49-41c1-834d-552234fc7f18" outPort="Port 0 (out)" toNode="BEAN_WRITER0:0"/>
+</Phase>
+</Graph>
